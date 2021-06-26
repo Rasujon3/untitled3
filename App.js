@@ -28,10 +28,22 @@ class App extends Component {
     getData = async () => {
 
         try {
-            let NameGet = await AsyncStorage.getItem('nameKey');
+            var NameGet = await AsyncStorage.getItem('nameKey');
             this.setState({NameData: NameGet});
         } catch (e) {
             Alert.alert('Data Get failed!');
+        }
+
+    };
+
+    deleteData = async () => {
+
+        try {
+            // await AsyncStorage.removeItem('nameKey');
+            await AsyncStorage.clear();
+            Alert.alert('Data Deleted Successfully!');
+        } catch (e) {
+            Alert.alert('Data Delete failed!');
         }
 
     };
@@ -52,6 +64,10 @@ class App extends Component {
 
                 <View style={{margin: 10}}>
                     <Button onPress={this.getData} title="Get"/>
+                </View>
+
+                <View style={{margin: 10}}>
+                    <Button onPress={this.deleteData} title="Delete"/>
                 </View>
 
                 <View style={{margin: 10}}>
