@@ -19,11 +19,9 @@ class App extends Component {
     saveData = async () => {
 
         try {
-            var NamePair=['NameKey',this.state.NameData];
-            var RollPair=['RollKey',this.state.RollData];
-            var ClassPair=['ClassKey',this.state.ClassData];
-
-            await AsyncStorage.multiSet([NamePair,RollPair,ClassPair]);
+            var AllDataArray = [this.state.NameData, this.state.RollData, this.state.ClassData];
+            var AllDataArrayString = AllDataArray.toString();
+            await AsyncStorage.setItem('AllDataKey', AllDataArrayString);
             Alert.alert('Data Saved');
 
         } catch (e) {
@@ -35,8 +33,8 @@ class App extends Component {
     getData = async () => {
 
         try {
-          var selectedData =  await AsyncStorage.multiGet(['NameKey','RollKey','ClassKey']);
-            this.setState({AllData:selectedData.toString()});
+           var selectedData = await AsyncStorage.getItem('AllDataKey');
+            this.setState({AllData:selectedData});
         } catch (e) {
             Alert.alert('Data Get failed!');
         }
