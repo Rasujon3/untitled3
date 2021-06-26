@@ -1,6 +1,7 @@
 package com.untitled3;
 
 import android.app.Application;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
