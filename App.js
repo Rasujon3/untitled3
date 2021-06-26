@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Button,Alert} from 'react-native';
+import {View, Text, Button, Alert, TextInput} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -8,35 +8,43 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            NameData: "........."
-        }
+            NameData: '.........',
+            textInputData: '',
+        };
     }
 
-    saveData = async() => {
+    saveData = async () => {
 
         try {
-            await AsyncStorage.setItem('nameKey', 'Bd is my country');
+            var dataToSave = this.state.textInputData;
+            await AsyncStorage.setItem('nameKey', dataToSave);
             Alert.alert('Data Saved');
         } catch (e) {
             Alert.alert('Data Save failed! Try again');
         }
 
-    }
+    };
 
-    getData = async() => {
+    getData = async () => {
 
         try {
             let NameGet = await AsyncStorage.getItem('nameKey');
-            this.setState({NameData:NameGet});
+            this.setState({NameData: NameGet});
         } catch (e) {
             Alert.alert('Data Get failed!');
         }
 
-    }
+    };
 
     render() {
         return (
             <View>
+
+                <View style={{margin: 10}}>
+                    <TextInput onChangeText={(text) => {
+                        this.setState({textInputData: text});
+                    }} style={{padding: 5, height: 40, borderColor: 'blue', borderWidth: 1}} placeholder="Your Name"/>
+                </View>
 
                 <View style={{margin: 10}}>
                     <Button onPress={this.saveData} title="Save"/>
