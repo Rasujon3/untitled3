@@ -15,7 +15,7 @@ class App extends Component {
         let config = {Method:'GET'};
 
         fetch(URL,config)
-            .then((responseInitial)=>responseInitial.text())
+            .then((responseInitial)=>responseInitial.headers.get('date'))
             .then((responseFinal)=>{
                 this.setState({SimpleData:responseFinal})
             })
