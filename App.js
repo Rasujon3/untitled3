@@ -8,17 +8,24 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            NameData: '.........',
-            textInputData: '',
+            AllData: '.........',
+
+            NameData: ' ',
+            RollData: ' ',
+            ClassData: ' ',
         };
     }
 
     saveData = async () => {
 
         try {
-            var dataToSave = this.state.textInputData;
-            await AsyncStorage.setItem('nameKey', dataToSave);
+            var NamePair=['NameKey',this.state.NameData];
+            var RollPair=['RollKey',this.state.RollData];
+            var ClassPair=['ClassKey',this.state.ClassData];
+
+            await AsyncStorage.multiSet([NamePair,RollPair,ClassPair]);
             Alert.alert('Data Saved');
+
         } catch (e) {
             Alert.alert('Data Save failed! Try again');
         }
@@ -28,8 +35,8 @@ class App extends Component {
     getData = async () => {
 
         try {
-            var NameGet = await AsyncStorage.getItem('nameKey');
-            this.setState({NameData: NameGet});
+          var selectedData =  await AsyncStorage.multiGet(['NameKey','RollKey','ClassKey']);
+            this.setState({AllData:selectedData.toString()});
         } catch (e) {
             Alert.alert('Data Get failed!');
         }
@@ -54,8 +61,20 @@ class App extends Component {
 
                 <View style={{margin: 10}}>
                     <TextInput onChangeText={(text) => {
-                        this.setState({textInputData: text});
+                        this.setState({NameData: text});
                     }} style={{padding: 5, height: 40, borderColor: 'blue', borderWidth: 1}} placeholder="Your Name"/>
+                </View>
+
+                <View style={{margin: 10}}>
+                    <TextInput onChangeText={(text) => {
+                        this.setState({RollData: text});
+                    }} style={{padding: 5, height: 40, borderColor: 'blue', borderWidth: 1}} placeholder="Your Roll"/>
+                </View>
+
+                <View style={{margin: 10}}>
+                    <TextInput onChangeText={(text) => {
+                        this.setState({ClassData: text});
+                    }} style={{padding: 5, height: 40, borderColor: 'blue', borderWidth: 1}} placeholder="Your Class"/>
                 </View>
 
                 <View style={{margin: 10}}>
@@ -71,7 +90,7 @@ class App extends Component {
                 </View>
 
                 <View style={{margin: 10}}>
-                    <Text style={{fontSize: 30}}>{this.state.NameData}</Text>
+                    <Text style={{fontSize: 30}}>{this.state.AllData}</Text>
                 </View>
 
 
