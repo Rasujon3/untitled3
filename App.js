@@ -10,14 +10,16 @@ class App extends Component {
             age: "",
             city: "",
             mobile: "",
+            id: ""
         };
     }
 
     DataPost = () => {
-        let URL = 'http://apishooter.com/addPerson';
+        let URL = "http://apishooter.com/updatePersonById";
         let ConfigHeader = {Accept: 'application/json',
             'Content-type': 'application/json'};
         let ConfigBody = JSON.stringify({
+            id: this.state.id,
             name: this.state.name,
             age: this.state.age,
             city: this.state.city,
@@ -37,6 +39,10 @@ class App extends Component {
     render() {
         return (
             <View style={{margin: 20}}>
+                <TextInput placeholder="ID" onChangeText={(text) => {
+                    this.setState({id: text});
+                }} style={{borderWidth: 1, marginBottom: 10}}/>
+
                 <TextInput placeholder="Name" onChangeText={(text) => {
                     this.setState({name: text});
                 }} style={{borderWidth: 1, marginBottom: 10}}/>
