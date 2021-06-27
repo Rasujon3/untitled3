@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Alert, Button, Text, TextInput, View} from 'react-native';
-import {error} from 'eslint';
 
 class App extends Component {
 
@@ -8,29 +7,54 @@ class App extends Component {
         super(props);
         this.state = {
             name: "",
+            age: "",
+            city: "",
+            mobile: "",
         };
     }
 
     DataPost = () => {
-        let URL = 'http://apishooter.com/postSimpleString';
-        let ConfigHeader = {Accept: 'application/json', 'Content-type': 'application/json'};
-        let ConfigBody = JSON.stringify({text: this.state.name});
+        let URL = 'http://apishooter.com/addPerson';
+        let ConfigHeader = {Accept: 'application/json',
+            'Content-type': 'application/json'};
+        let ConfigBody = JSON.stringify({
+            name: this.state.name,
+            age: this.state.age,
+            city: this.state.city,
+            mobile: this.state.mobile
+
+        });
         let config = {method: 'POST', header: ConfigHeader, body: ConfigBody};
 
         fetch(URL, config)
             .then((response) => response.text())
             .then((responseData) => {
-                Alert.alert(responseData);
+                Alert.alert(responseData)
             })
-            .catch((error) = {});
+
     };
 
     render() {
         return (
             <View style={{margin: 20}}>
-                <TextInput onChangeText={(text) => {
+                <TextInput placeholder="Name" onChangeText={(text) => {
                     this.setState({name: text});
                 }} style={{borderWidth: 1, marginBottom: 10}}/>
+
+                <TextInput placeholder="Age"  onChangeText={(text) => {
+                    this.setState({age: text});
+                }} style={{borderWidth: 1, marginBottom: 10}}/>
+
+                <TextInput placeholder="City"  onChangeText={(text) => {
+                    this.setState({city: text});
+                }} style={{borderWidth: 1, marginBottom: 10}}/>
+
+                <TextInput placeholder="Mobile"  onChangeText={(text) => {
+                    this.setState({mobile: text});
+                }} style={{borderWidth: 1, marginBottom: 10}}/>
+
+
+
                 <Button onPress={this.DataPost} title="Post" />
 
             </View>
