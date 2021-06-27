@@ -29,19 +29,19 @@ class App extends Component {
 
     PullRefresh = () => {
         this.onAPICall();
-        Alert.alert('Hi');
     };
 
     onAPICall = () => {
+        this.setState({refreshLoader: true});
         let url = 'http://apishooter.com/getArticleList';
         let config = {method: 'GET'};
         fetch(url, config)
             .then((result) => result.json())
             .then((response) => {
-                this.setState({DATA: response, loading: false});
+                this.setState({DATA: response, loading: false,refreshLoader: false});
             }).catch((error) => {
             Alert.alert('Internet Connection error');
-            this.setState({loading: false});
+            this.setState({loading: false,refreshLoader: false});
         })
 
             .finally(() => {
