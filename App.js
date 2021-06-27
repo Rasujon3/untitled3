@@ -3,33 +3,36 @@ import {View, Text, Image, FlatList, ActivityIndicator, Alert} from 'react-nativ
 
 class App extends Component {
 
-    DATA = [
-        {
-            id: 1,
-            title: 'What is global warming, explained',
-            img: 'https://cdn.pixabay.com/photo/2017/02/03/10/45/global-warming-2034896__480.jpg',
-            short_des: 'Glaciers are melting, sea levels are rising, cloud forests are dying, and wildlife is scrambling to keep pace. It has become clear that humans have caused most of the past century\'s warming',
-
-        },
-
-        {
-            id: 2,
-            title: 'What is global warming, explained',
-            img: 'https://cdn.pixabay.com/photo/2017/02/03/10/45/global-warming-2034896__480.jpg',
-            short_des: 'Glaciers are melting, sea levels are rising, cloud forests are dying, and wildlife is scrambling to keep pace. It has become clear that humans have caused most of the past century\'s warming',
-
-        },
-    ];
-
     constructor() {
         super();
         this.state = {
             DATA: [],
             loading: true,
+            refreshLoader: false,
         };
     }
 
     componentDidMount = () => {
+        this.onAPICall();
+
+    };
+
+    ChildView = ({img, title, short_des}) => {
+        return (
+            <View style={{marginBottom: 40, width: '100%'}}>
+                <Image style={{width: '100%', height: 200}} source={{uri: img}}/>
+                <Text style={{fontSize: 22}}>{title}</Text>
+                <Text style={{fontSize: 14}}>{short_des}</Text>
+            </View>
+        );
+    };
+
+    PullRefresh = () => {
+        this.onAPICall();
+        Alert.alert('Hi');
+    };
+
+    onAPICall = () => {
         let url = 'http://apishooter.com/getArticleList';
         let config = {method: 'GET'};
         fetch(url, config)
@@ -46,21 +49,11 @@ class App extends Component {
             });
     };
 
-    ChildView = ({img, title, short_des}) => {
-        return (
-            <View style={{margin: '2.5%', width: '100%', height: 200}}>
-                <Image style={{width: '95%', height: 130}} source={{uri: img}}/>
-                <Text style={{fontSize: 18}}>{title}</Text>
-                <Text style={{fontSize: 12}}>{short_des}</Text>
-            </View>
-        );
-    };
-
     render() {
 
         if (this.state.loading === true) {
             return (
-                <View style={{flex:1,flexDirection:'column',justifyContent:'center'}}>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                     <ActivityIndicator size="large" color="#ff2233"/>
                 </View>
             );
@@ -68,6 +61,8 @@ class App extends Component {
             return (
                 <View>
                     <FlatList
+                        onRefresh={() => this.PullRefresh()}
+                        refreshing={this.state.refreshLoader}
                         data={this.state.DATA}
                         keyExtractor={item => item.id.toString()}
                         renderItem={({item}) => <this.ChildView
